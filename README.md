@@ -2,7 +2,7 @@
 
 ```
 $ cd ruby
-$ puma -t 32 -w 4
+$ puma -t 16 -w 4
 ```
 
 ```

@@ -22,7 +22,7 @@ $ go run server.go
 
 ## Tests and results
 
-### puma
+### Puma
 ```
 $ wrk -t100 -c1000 -d60s http://127.0.0.1:9292
 Running 1m test @ http://127.0.0.1:9292
@@ -36,7 +36,7 @@ Requests/sec:   5682.88
 Transfer/sec:      0.97MB
 ```
 
-### unicorn
+### Unicorn
 ```
 $ wrk -t100 -c1000 -d60s http://127.0.0.1:8080
 Running 1m test @ http://127.0.0.1:8080
@@ -50,7 +50,7 @@ Requests/sec:    476.08
 Transfer/sec:    116.70KB
 ```
 
-### node single core
+### Node single core
 ```
 $ wrk -t100 -c1000 -d60s http://127.0.0.1:8081
 Running 1m test @ http://127.0.0.1:8081
@@ -64,7 +64,7 @@ Requests/sec:   5733.24
 Transfer/sec:    745.15KB
 ```
 
-### node multicore
+### Node multicore
 ```
 $ wrk -t100 -c1000 -d60s http://127.0.0.1:8081
 Running 1m test @ http://127.0.0.1:8081
@@ -78,7 +78,7 @@ Requests/sec:  18765.99
 Transfer/sec:      2.38MB
 ```
 
-### go no single core
+### Go no single core
 ```
 $ wrk -t12 -c1000 -d60s http://127.0.0.1:8080
 Running 1m test @ http://127.0.0.1:8080

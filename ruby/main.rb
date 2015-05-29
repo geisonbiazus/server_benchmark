@@ -1,5 +1,5 @@
 require 'sinatra'
 
 get '/' do
-  "success"
+  "Ruby Server: Success"
 end

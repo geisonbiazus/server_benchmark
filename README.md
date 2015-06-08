@@ -1,93 +1,78 @@
-## Staring servers
-
-```
-$ cd ruby
-$ puma -t 16 -w 4
-```
-
-```
-$ cd ruby
-$ unicorn -c unicorn.rb
-```
-
-```
-$ cd nodejs
-$ nodejs cluster.js
-```
-
-```
-$ cd go
-$ go run server.go
-```
-
 ## Tests and results
 
 ### Puma
 ```
-$ wrk -t100 -c1000 -d60s http://127.0.0.1:9292
+$ puma -t 16 -w 4
+$wrk -t12 -c1000 -d60s http://127.0.0.1:9292
+
 Running 1m test @ http://127.0.0.1:9292
-  100 threads and 1000 connections
+  12 threads and 1000 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency    11.25ms   12.62ms  99.24ms   78.17%
-    Req/Sec   713.93    279.93     3.92k    71.19%
-  341540 requests in 1.00m, 58.30MB read
-  Socket errors: connect 79, read 0, write 0, timeout 0
-Requests/sec:   5682.88
-Transfer/sec:      0.97MB
+    Latency    11.69ms   11.73ms 205.80ms   82.18%
+    Req/Sec     1.08k     0.90k    3.35k    71.50%
+  323094 requests in 1.00m, 59.47MB read
+Requests/sec:   5376.79
+Transfer/sec:      0.99MB
 ```
 
 ### Unicorn
 ```
-$ wrk -t100 -c1000 -d60s http://127.0.0.1:8080
+$ unicorn -c unicorn.rb
+$ wrk -t12 -c1000 -d60s http://127.0.0.1:8080
+
 Running 1m test @ http://127.0.0.1:8080
-  100 threads and 1000 connections
+  12 threads and 1000 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency    95.60ms  171.20ms   1.83s    95.87%
-    Req/Sec    38.47     35.48   260.00     76.55%
-  28611 requests in 1.00m, 6.85MB read
-  Socket errors: connect 522, read 799, write 0, timeout 839
-Requests/sec:    476.08
-Transfer/sec:    116.70KB
+    Latency   108.06ms  179.85ms   1.98s    95.33%
+    Req/Sec   137.87    186.49     1.49k    89.74%
+  31852 requests in 1.00m, 8.05MB read
+  Socket errors: connect 614, read 753, write 0, timeout 508
+Requests/sec:    530.02
+Transfer/sec:    137.16KB
 ```
 
 ### Node single core
 ```
-$ wrk -t100 -c1000 -d60s http://127.0.0.1:8081
+$ nodejs app.js
+$ wrk -t12 -c1000 -d60s http://127.0.0.1:8081
+
 Running 1m test @ http://127.0.0.1:8081
-  100 threads and 1000 connections
+  12 threads and 1000 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency   156.18ms   26.27ms 524.29ms   87.05%
-    Req/Sec    65.51     30.98   202.00     57.32%
-  344567 requests in 1.00m, 43.73MB read
-  Socket errors: connect 79, read 0, write 0, timeout 0
-Requests/sec:   5733.24
-Transfer/sec:    745.15KB
+    Latency   175.10ms   41.06ms   1.16s    93.88%
+    Req/Sec   470.57    277.98     2.30k    63.12%
+  336415 requests in 1.00m, 47.20MB read
+  Socket errors: connect 0, read 0, write 0, timeout 32
+Requests/sec:   5603.51
+Transfer/sec:    805.14KB
 ```
 
 ### Node multicore
 ```
-$ wrk -t100 -c1000 -d60s http://127.0.0.1:8081
+$ node clusters.js
+$ wrk -t12 -c1000 -d60s http://127.0.0.1:8081
+
 Running 1m test @ http://127.0.0.1:8081
-  100 threads and 1000 connections
+  12 threads and 1000 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency    48.99ms   11.50ms 204.35ms   82.27%
-    Req/Sec   202.81     41.58   303.00     70.96%
-  1127833 requests in 1.00m, 143.15MB read
-  Socket errors: connect 79, read 0, write 0, timeout 0
-Requests/sec:  18765.99
-Transfer/sec:      2.38MB
+    Latency    43.55ms   13.39ms 549.80ms   95.15%
+    Req/Sec     1.93k   229.59     2.35k    81.01%
+  1382946 requests in 1.00m, 194.01MB read
+Requests/sec:  23010.65
+Transfer/sec:      3.23MB
 ```
 
-### Go no single core
+### Go
 ```
+$ go run server.go
 $ wrk -t12 -c1000 -d60s http://127.0.0.1:8080
+
 Running 1m test @ http://127.0.0.1:8080
-  100 threads and 1000 connections
+  12 threads and 1000 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency    18.13ms    4.84ms 217.01ms   87.46%
-    Req/Sec   542.15     90.03     3.12k    91.99%
-  3033688 requests in 1.00m, 422.40MB read
-  Socket errors: connect 79, read 0, write 0, timeout 0
-Requests/sec:  50477.78
-Transfer/sec:      7.03MB
+    Latency    21.32ms   18.35ms 825.18ms   98.47%
+    Req/Sec     4.02k     0.94k   15.62k    84.65%
+  2846596 requests in 1.00m, 396.35MB read
+Requests/sec:  47392.59
+Transfer/sec:      6.60MB
 ```
